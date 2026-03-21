@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 const Home = () => {
   const [todos, setTodos] = useState([]);
   const [isLoding, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
   const [text, setText] = useState("");
 
+  const navigateTo = useNavigate();
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -67,6 +69,19 @@ const Home = () => {
   setError("Failed to find todo status")
  }
 }
+  const logout = async () => {
+    try {
+      await axios.get("http://localhost:4000/user/logout",);
+      toast.success("User logged out successfully");
+      navigateTo("/login");
+      localStorage.removeItem("jwt");
+    } catch (error) {
+      toast.error("Error logging out");
+    }
+  };
+
+const remainingTodo=todos.filter((todo)=>!todo.completed).length
+
   return (
     <div className=" flex justify-center mt-10   ">
       <div className=" bg-gray-200 p-10 rounded shadow-2xl ">
@@ -111,9 +126,9 @@ const Home = () => {
           )}
         </div>
 
-        <p className="text-center"> 3 Todo remaining</p>
+        <p className="text-center"> {remainingTodo} Todo remaining</p>
         <div className="text-center mt-4">
-          <button className="bg-red-500 p-2 text-white rounded cursor-pointer">
+          <button onClick={()=>logout()} className="bg-red-500 p-2 text-white rounded cursor-pointer">
             Logout
           </button>
         </div>

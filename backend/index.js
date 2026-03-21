@@ -5,9 +5,11 @@ import cors from 'cors'
 import todoRoutes from './routes/todo.routes.js'
 import connectDb from './config/db.js'
 import userRouter from './routes/user.routes.js'
+import cookieParser from "cookie-parser";
 const app= express()
 const port=4000
 app.use(express.json())
+app.use(cookieParser());
 app.use(cors())
 app.get("/",(req,res)=>{
   res.send("Hello")

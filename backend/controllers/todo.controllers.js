@@ -2,7 +2,7 @@ import Todo from "../models/todo.model.js"
 
 export const getTodo=async (req,res) => {
   try {
-    const todos=await Todo.find()
+    const todos=await Todo.find({user:req.user._id})
     res.status(200).json({message:"Get Todos",todos})
   } catch (error) {
         res.status(400).json({message:"error occure in get todo"})

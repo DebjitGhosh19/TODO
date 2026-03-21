@@ -1,5 +1,5 @@
 import React from 'react'
-import { Route, Routes } from 'react-router-dom'
+import { Navigate, Route, Routes } from 'react-router-dom'
 import toast, { Toaster } from 'react-hot-toast';
 import Home from "./components/Home.jsx"
 import Login from "./components/Login.jsx"
