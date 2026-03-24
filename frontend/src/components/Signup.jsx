@@ -1,10 +1,9 @@
-
 import axios from "axios";
 import React, { useState } from "react";
 import toast from "react-hot-toast";
 import { Link, useNavigate } from "react-router-dom";
 const Signup = () => {
-  const [username, setUserName] = useState("");
+  const [userName, setuserName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
@@ -14,24 +13,19 @@ const Signup = () => {
     e.preventDefault();
     try {
       const { data } = await axios.post(
-        "http://localhost:4001/user/signup",
+        "http://localhost:4000/user/signup",
         {
-          username,
+          userName,
           email,
           password,
         },
-        {
-          withCredentials: true,
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
+        
       );
       console.log(data);
       toast.success(data.message || "User registered successfully");
       localStorage.setItem("jwt", data.token);
       navigateTo("/login");
-      setUserName("");
+      setuserName("");
       setEmail("");
       setPassword("");
     } catch (error) {
@@ -47,17 +41,17 @@ const Signup = () => {
           <div className="w-full max-w-md p-8 bg-white rounded-lg shadow-lg">
             <h2 className="text-2xl font-semibold mb-5 text-center">Signup</h2>
             <form onSubmit={handleRegister}>
-              {/* username */}
+              {/* userName */}
               <div className="mb-4">
                 <label className="block mb-2 font-semibold" htmlFor="">
-                  Username
+                  User Name
                 </label>
                 <input
                   className="w-full p-3 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
                   type="text"
-                  value={username}
-                  onChange={(e) => setUserName(e.target.value)}
-                  placeholder="Type Username"
+                  value={userName}
+                  onChange={(e) => setuserName(e.target.value)}
+                  placeholder="Type User Name"
                 />
               </div>
               {/* email */}
@@ -83,7 +77,7 @@ const Signup = () => {
                   type="password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  placeholder="Type Username"
+                  placeholder="Type Password"
                 />
               </div>
 
@@ -105,7 +99,6 @@ const Signup = () => {
       </div>
     </div>
   );
-}
+};
 
-
-export default Signup
+export default Signup;

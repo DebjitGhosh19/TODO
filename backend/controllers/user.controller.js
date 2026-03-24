@@ -8,11 +8,12 @@ export const register = async (req, res) => {
     if (!userName || !email || !password) {
       return res.status(400).json({ message: "Require all fields" });
     }
+console.log(userName,email,password);
 
     const user = await User.findOne({ email });
 
     if (user) {
-      res.status(400).json({
+     return res.status(400).json({
         message: "User alreadey exitst",
       });
     }
@@ -39,16 +40,13 @@ export const login = async (req, res) => {
 const user=await User.findOne({email})
 console.log(user);
 if (!user) {
-   res.status(400).json({message:"Invalid credencial"})
+   return res.status(400).json({message:"Invalid credencial"})
 }
 const checkPassword=bcrypt.compareSync(password,user.password);
 if (!checkPassword) {
     res.status(400).json({message:"Invalid credencial"})
 }
  const token = await generateTokenAndSaveCookies(user._id, res);
-    res
-      .status(200)
-      .json({ message: "User logged in successfully", user, token });
 res.status(200).json({message:"user login successfully",user,token})
    } catch (error) {
     res.status(400).json({message:"Error occuring in login"})

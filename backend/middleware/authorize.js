@@ -8,9 +8,16 @@ export const authenticate=async (req,res,next) => {
   }
   try {
     const decoded=jwt.verify(token,process.env.Jwt_SecretKey);
-    req.user=await User.findById(decoded.userId)
+      const user = await User.findById(decoded.userId);
+
+    if (!user) {
+      return res.status(401).json({ message: "User not found" });
+    }
+
+    req.user = user;
+     next();
   } catch (error) {
         return res.status(401).json({ message: "" + error.message });
   }
-    next();
+   
 }

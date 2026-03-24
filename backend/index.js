@@ -7,13 +7,17 @@ import connectDb from './config/db.js'
 import userRouter from './routes/user.routes.js'
 import cookieParser from "cookie-parser";
 const app= express()
-const port=4000
+const port = process.env.PORT || 4000
 app.use(express.json())
 app.use(cookieParser());
-app.use(cors())
-app.get("/",(req,res)=>{
-  res.send("Hello")
-})
+app.use(cors({
+    origin: process.env.FRONTEND_URL,
+    credentials: true,
+    methods: ["GET","POST","PUT","DELETE"],
+    allowedHeaders: ["Content-Type", "Authorization"], // Add other headers you want to allow here.
+  })
+)
+
 connectDb()
 app.use("/todo",todoRoutes)
 app.use("/user",userRouter)

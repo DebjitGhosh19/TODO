@@ -6,6 +6,6 @@ const userRouter=expresss.Router();
 
 userRouter.post("/signup", validateSignup,register)
 userRouter.post("/login",login)
-userRouter.post("/logout",logout)
+userRouter.get("/logout",logout)
 
 export default userRouter

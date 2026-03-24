@@ -4,7 +4,7 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 const Home = () => {
   const [todos, setTodos] = useState([]);
-  const [isLoding, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
   const [text, setText] = useState("");
 
@@ -13,7 +13,11 @@ const Home = () => {
     const fetchData = async () => {
       try {
         setIsLoading(true);
-        const response = await axios.get("http://localhost:4000/todo/get");
+        const response = await axios.get("http://localhost:4000/todo/get",{
+          withCredentials: true,
+          headers: {
+            "Content-Type": "application/json",
+          },});
         setTodos(response.data.todos);
         setError(null);
       } catch (error) {
@@ -33,7 +37,9 @@ const Home = () => {
       const response = await axios.post("http://localhost:4000/todo/create", {
         text,
         completed: false,
-      });
+      },  {
+          withCredentials: true,
+        });
       setTodos([...todos, response.data.newTodo]);
       setText("");
     } catch (error) {
@@ -42,36 +48,34 @@ const Home = () => {
   };
 
   const DeleteTodo = async (id) => {
-    
-    
     try {
-      const response = await axios.delete(
-        `http://localhost:4000/todo/delete/${id}`,
+     await axios.delete(
+        `http://localhost:4000/todo/delete/${id}`,{withCredentials:true}
       );
-   
-     setTodos(todos.filter((t)=>t._id!==id))
-      
+
+      setTodos(todos.filter((t) => t._id !== id));
     } catch (error) {
-      setError("Error occuring in deleting todo")
+      setError("Error occuring in deleting todo");
     }
   };
- const updateTodo=async (id) => {
-  const todo=todos.find((t)=>t._id===id)
- try {
-   const response=await  axios.put(
-         `http://localhost:4000/todo/update/${id}`,{text:todo.text,completed:!todo.completed}
-       );
-     
-       
-       setTodos(todos.map((t)=>(t._id===id?response.data.updateTodo:t)))
- 
- } catch (error) {
-  setError("Failed to find todo status")
- }
-}
+  const updateTodo = async (id) => {
+    const todo = todos.find((t) => t._id === id);
+    try {
+      const response = await axios.put(
+        `http://localhost:4000/todo/update/${id}`,
+        { text: todo.text, completed: !todo.completed },{
+          withCredentials: true,
+        },
+      );
+
+      setTodos(todos.map((t) => (t._id === id ? response.data.updateTodo : t)));
+    } catch (error) {
+      setError("Failed to find todo status");
+    }
+  };
   const logout = async () => {
     try {
-      await axios.get("http://localhost:4000/user/logout",);
+      await axios.get("http://localhost:4000/user/logout",{withCredentials:true});
       toast.success("User logged out successfully");
       navigateTo("/login");
       localStorage.removeItem("jwt");
@@ -80,7 +84,7 @@ const Home = () => {
     }
   };
 
-const remainingTodo=todos.filter((todo)=>!todo.completed).length
+  const remainingTodo = todos.filter((todo) => !todo.completed).length;
 
   return (
     <div className=" flex justify-center mt-10   ">
@@ -102,18 +106,23 @@ const remainingTodo=todos.filter((todo)=>!todo.completed).length
           </button>
         </div>
         <div className="mt-4">
-          {isLoding ? (
+          {isLoading ? (
             <h1 className="text-center">Is Loading...</h1>
           ) : error ? (
-            <h>{error}</h>
+            <h1>{error}</h1>
           ) : (
             todos.map((todo) => (
               <div key={todo._id} className="flex justify-between my-3 gap-4">
                 <div className="flex gap-2">
-                  <input onChange={()=>updateTodo(todo._id)} type="checkbox" 
-                  checked={todo.completed}
-                  className="cursor-pointer" />
-                  <p className={`${todo.completed?"line-through":""}`}>{todo.text}</p>
+                  <input
+                    onChange={() => updateTodo(todo._id)}
+                    type="checkbox"
+                    checked={todo.completed}
+                    className="cursor-pointer"
+                  />
+                  <p className={`${todo.completed ? "line-through" : ""}`}>
+                    {todo.text}
+                  </p>
                 </div>
                 <button
                   onClick={() => DeleteTodo(todo._id)}
@@ -128,7 +137,10 @@ const remainingTodo=todos.filter((todo)=>!todo.completed).length
 
         <p className="text-center"> {remainingTodo} Todo remaining</p>
         <div className="text-center mt-4">
-          <button onClick={()=>logout()} className="bg-red-500 p-2 text-white rounded cursor-pointer">
+          <button
+            onClick={() => logout()}
+            className="bg-red-500 p-2 text-white rounded cursor-pointer"
+          >
             Logout
           </button>
         </div>

@@ -1,4 +1,3 @@
-
 import axios from "axios";
 import React, { useState } from "react";
 import toast from "react-hot-toast";
@@ -12,8 +11,8 @@ const Login = () => {
   const handleRegister = async (e) => {
     e.preventDefault();
     try {
-      const { data } = await axios.post(
-        "http://localhost:4001/user/login",
+      const response = await axios.post(
+        "http://localhost:4000/user/login",
         {
           email,
           password,
@@ -23,11 +22,11 @@ const Login = () => {
           headers: {
             "Content-Type": "application/json",
           },
-        }
+        },
       );
-      console.log(data);
-      toast.success(data.message || "User loggedin successfully");
-      localStorage.setItem("jwt", data.token);
+      console.log(response);
+      toast.success(response.data.message || "User loggedin successfully");
+      localStorage.setItem("jwt", response.data.token);
       navigateTo("/");
       setEmail("");
       setPassword("");
@@ -67,7 +66,7 @@ const Login = () => {
                   type="password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  placeholder="Type Username"
+                  placeholder="Type password"
                 />
               </div>
 
@@ -89,6 +88,6 @@ const Login = () => {
       </div>
     </div>
   );
-}
+};
 
 export default Login;

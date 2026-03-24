@@ -4,9 +4,7 @@ import { body, validationResult } from "express-validator";
 export const validateSignup = [
   body("userName")
     .isLength({ min: 4 })
-    .withMessage("Username must be at least 4 characters long")
-    .isAlphanumeric()
-    .withMessage("Username must contain only letters and numbers"),
+    .withMessage("Username must be at least 4 characters long"),
 
   body("email").isEmail().withMessage("Please enter a valid email address"),
 
