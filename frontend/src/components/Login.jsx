@@ -27,12 +27,13 @@ const Login = () => {
       console.log(response);
       toast.success(response.data.message || "User loggedin successfully");
       localStorage.setItem("jwt", response.data.token);
-      navigateTo("/");
+    
       setEmail("");
       setPassword("");
+        navigateTo("/");
     } catch (error) {
       console.log(error);
-      toast.error(error.response.data.errors || "User registration failed");
+      toast.error(error.response.data.message || "User registration failed");
     }
   };
 
