@@ -24,15 +24,15 @@ const Login = () => {
           },
         },
       );
-      console.log(response);
+      console.log(response.data.user.token);
       toast.success(response.data.message || "User loggedin successfully");
-      localStorage.setItem("jwt", response.data.token);
-    
+      localStorage.setItem("jwt", response.data.user.token);
+
       setEmail("");
       setPassword("");
-        navigateTo("/");
+          navigateTo("/");
     } catch (error) {
-      console.log(error);
+      // console.log(error);
       toast.error(error.response.data.message || "User registration failed");
     }
   };

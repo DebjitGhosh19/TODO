@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { Navigate, Route, Routes } from 'react-router-dom'
 import toast, { Toaster } from 'react-hot-toast';
 import Home from "./components/Home.jsx"
@@ -7,6 +7,9 @@ import Signup from "./components/Signup.jsx"
 import PageNotFound from "./components/PageNotFound";
 const App = () => {
   const token = localStorage.getItem("jwt");
+ 
+  
+
   return (
     <>
     <Toaster/>

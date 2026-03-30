@@ -21,7 +21,7 @@ const Signup = () => {
         },
         
       );
-      console.log(data);
+      // console.log(data);
       toast.success(data.message || "User registered successfully");
       localStorage.setItem("jwt", data.token);
       navigateTo("/login");
@@ -29,7 +29,7 @@ const Signup = () => {
       setEmail("");
       setPassword("");
     } catch (error) {
-      console.log(error);
+      // console.log(error);
       toast.error(error.response.data.errors || "User registration failed");
     }
   };

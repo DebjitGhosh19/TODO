@@ -8,7 +8,7 @@ export const register = async (req, res) => {
     if (!userName || !email || !password) {
       return res.status(400).json({ message: "Require all fields" });
     }
-console.log(userName,email,password);
+// console.log(userName,email,password);
 
     const user = await User.findOne({ email });
 
@@ -24,7 +24,7 @@ console.log(userName,email,password);
    
     if (newUser) {
       const token = await generateTokenAndSaveCookies(newUser._id,res)
-      res.status(201).json({ message: "User created successfully", newUser ,token});
+      res.status(201).json({ message: "User created successfully", newUser});
     }
   } catch (error) {
     res.status(400).json({ message: "Error occuring in Register user" });
@@ -38,7 +38,7 @@ export const login = async (req, res) => {
       return   res.status(400).json({message:"Require all fields"})
      }
 const user=await User.findOne({email})
-console.log(user);
+// console.log(user);
 if (!user) {
    return res.status(400).json({message:"Invalid credencial"})
 }
@@ -47,7 +47,7 @@ if (!checkPassword) {
     res.status(400).json({message:"Invalid credencial"})
 }
  const token = await generateTokenAndSaveCookies(user._id, res);
-res.status(200).json({message:"user login successfully",user,token})
+res.status(200).json({message:"user login successfully",user})
    } catch (error) {
     res.status(400).json({message:"Error occuring in login"})
    }
